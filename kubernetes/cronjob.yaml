@@ -1,0 +1,69 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: drupal-cron
+spec:
+  suspend: false
+  schedule: "@hourly"
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 1000
+  successfulJobsHistoryLimit: 10
+  failedJobsHistoryLimit: 10
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: php
+              image: php
+              imagePullPolicy: IfNotPresent
+              args:
+                - drush cron
+              command:
+                - /bin/bash
+                - -c
+              env:
+                - name: PHP_MEMORY_LIMIT
+                  value: 512Mi
+              resources:
+                requests:
+                  cpu:    250m
+                  memory: 512Mi
+                limits:
+                  cpu:    "1"
+                  memory: 512Mi
+              securityContext:
+                readOnlyRootFilesystem: true
+              volumeMounts:
+                - name: config
+                  mountPath: /etc/drupal/config
+                  readOnly: true
+                - name: secret
+                  mountPath: /etc/drupal/secret
+                  readOnly: true
+                - name: public
+                  mountPath: /data/app/sites/default/files
+                - name: private
+                  mountPath: /mnt/private
+                - name: temporary
+                  mountPath: /mnt/temporary
+          volumes:
+            - name: config
+              configMap:
+                defaultMode: 420
+                name: drupal
+            - name: secret
+              secret:
+                defaultMode: 420
+                secretName: drupal
+            - name: public
+              persistentVolumeClaim:
+                claimName: drupal-public
+            - name: private
+              persistentVolumeClaim:
+                claimName: drupal-private
+            - name: temporary
+              persistentVolumeClaim:
+                claimName: drupal-temporary

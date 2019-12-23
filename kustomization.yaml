@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+images:
+  - name: nginx
+    newName: docker.io/org/example-nginx
+  - name: php
+    newName: docker.io/org/example-php
+
+resources:
+  - kubernetes/configmap.yaml
+  - kubernetes/cronjob.yaml
+  - kubernetes/deployment.yaml
+  - kubernetes/hpa.yaml
+  - kubernetes/pvc.yaml
+  - kubernetes/secret.yaml
+  - kubernetes/service.yaml
+
+commonLabels:
+  app.kubernetes.io/name: project1
+  app.kubernetes.io/component: application
+  app.kubernetes.io/part-of: drupal
+  app.kubernetes.io/managed-by: kustomize
