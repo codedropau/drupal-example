@@ -156,11 +156,24 @@ kubectl -n $NAMESPACE patch configmap -p '{"data": {"config.json": "{\"mysql.dat
 
 ## Step 5. Verify
 
-* Drush site install it up
-* Port forward
-* Check it out
+To verify this deployment we can install the site and inspect it via our local bowser.
+
+```bash
+# Install the site using Drush.
+kubectl -n $NAMESPACE exec -it -c php deployment/drupal -- vendor/bin/drush site-install standard
+
+# Setup a tunnel to the Drupal application running on the cluster.
+kubectl -n $NAMESPACE port-forward deployment/drupal 8080:8080
+```
+
+You can now inspect the site on:
+
+http://127.0.0.1:8080
+
 
 ## OPTIONAL - Add to a deployment pipeline
+
+All the above can be automated via a CI/CD pipeline.
 
 The following is a snippet which can be used as part of a deployment pipeline.
 

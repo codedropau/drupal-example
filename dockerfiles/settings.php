@@ -22,8 +22,6 @@ $settings['file_public_path'] = 'sites/default/files';
 $config['system.file']['path']['temporary'] = '/mnt/temporary';
 $settings['file_private_path'] = '/mnt/private';
 
-$config_directories['sync'] = DRUPAL_ROOT . '/../config-export';
-
 $settings['hash_salt'] = !empty($settings['hash_salt']) ? $settings['hash_salt'] : 'xxxxxxxxxxxxxxxxxxxx';
 
 $settings['trusted_host_patterns'][] = '^127\.0\.0\.1$';

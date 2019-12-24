@@ -20,9 +20,9 @@ spec:
               image: php
               imagePullPolicy: IfNotPresent
               args:
-                - drush cron
+                - vendor/bin/drush -r app cron
               command:
-                - /bin/bash
+                - /bin/sh
                 - -c
               env:
                 - name: PHP_MEMORY_LIMIT

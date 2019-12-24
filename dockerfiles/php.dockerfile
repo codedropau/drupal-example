@@ -4,7 +4,7 @@ RUN composer global require hirak/prestissimo
 
 RUN composer create-project drupal/recommended-project . --no-interaction && \
     composer require drush/drush:^10 && \
-    mv web app
+    ln -sf web app
 
 ADD dockerfiles/settings.k8s.php app/sites/default/settings.k8s.php
 ADD dockerfiles/settings.php app/sites/default/settings.php
