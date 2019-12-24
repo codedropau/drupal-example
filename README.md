@@ -128,7 +128,7 @@ persistentvolumeclaim/drupal-temporary   Bound    pvc-d8663c34-81f4-4c52-bc7c-c2
 
 The deployment will be complete once:
 
-* The _Deployment_ has 3/3 _Ready_ replicas.
+* The _Deployment_ has 1/1 _Ready_ replicas.
 * The _PersistentVolumeClaims_ have becomes _Bound_.
 
 Now we configure the application to talk to backend resources.
