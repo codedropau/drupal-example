@@ -4,11 +4,14 @@ metadata:
   name: drupal-public
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
+  # This will change based on infrastructure.
+  #   - ReadWriteMany
   resources:
     requests:
       storage: 20Gi
-  storageClassName: standard
+  # This will need to be set based on infrastructure.
+  # storageClassName: standard
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -16,11 +19,14 @@ metadata:
   name: drupal-private
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
+  # This will change based on infrastructure.
+  #   - ReadWriteMany
   resources:
     requests:
       storage: 20Gi
-  storageClassName: standard
+  # This will need to be set based on infrastructure.
+  # storageClassName: standard
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -28,8 +34,11 @@ metadata:
   name: drupal-temporary
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
+  # This will change based on infrastructure.
+  #   - ReadWriteMany
   resources:
     requests:
       storage: 20Gi
-  storageClassName: standard
+  # This will need to be set based on infrastructure.
+  # storageClassName: standard

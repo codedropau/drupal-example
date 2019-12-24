@@ -4,7 +4,7 @@ services:
   k3s:
     # https://k3s.io
     image: rancher/k3s:v1.0.0
-    command: server --node-name=k3s
+    command: server --node-name=k3s --no-deploy=traefik --no-deploy=servicelb
     privileged: true
     ports:
       - "6443:6443"
@@ -16,3 +16,23 @@ services:
       - /var/run
     volumes:
       - ./.kube:/output
+      - ./compose/registries.yaml:/etc/rancher/k3s/registries.yaml
+      - ./compose/registry.yaml:/var/lib/rancher/k3s/server/manifests/registry.yaml
+      - ./compose/mysql.yaml:/var/lib/rancher/k3s/server/manifests/mysql.yaml
+    networks:
+      internal:
+        ipv4_address: 10.20.0.2
+
+  registry.drupal-tutorial.svc.cluster.local:
+    image: registry:2.6
+    ports:
+      - "5000:5000"
+    networks:
+      internal:
+        ipv4_address: 10.20.0.3
+
+networks:
+  internal:
+    ipam:
+      config:
+        - subnet: 10.20.0.0/24

@@ -15,12 +15,10 @@ spec:
               containerPort: 8080
               protocol: TCP
           livenessProbe:
-            httpGet:
-              path: /
+            tcpSocket:
               port: http
           readinessProbe:
-            httpGet:
-              path: /
+            tcpSocket:
               port: http
           resources:
             requests:
@@ -61,10 +59,7 @@ spec:
               value: "10"
           volumeMounts:
             - name: config
-              mountPath: /etc/drupal/config
-              readOnly: true
-            - name: secret
-              mountPath: etc/drupal/secret
+              mountPath: /etc/drupal
               readOnly: true
             - name: public
               mountPath: /data/app/sites/default/files
@@ -81,10 +76,6 @@ spec:
           configMap:
             defaultMode: 420
             name: drupal
-        - name: secret
-          secret:
-            defaultMode: 420
-            secretName: drupal
         - name: public
           persistentVolumeClaim:
             claimName: drupal-public

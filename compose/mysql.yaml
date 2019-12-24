@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mysql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nonprod
+  namespace: mysql
+spec:
+  selector:
+    app: mysql
+    env: nonprod
+  ports:
+    - port: 3306
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nonprod-data
+  namespace: mysql
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nonprod
+  namespace: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+      env: nonprod
+  template:
+    metadata:
+      labels:
+        app: mysql
+        env: nonprod
+    spec:
+      containers:
+        - name: mysql
+          image: mariadb:10
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: password
+          resources:
+            limits:
+              cpu: 100m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 512Mi
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: nonprod-data
