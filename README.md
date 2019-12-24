@@ -1,7 +1,7 @@
 Drupal Tutorial
 ===============
 
-@todo, Goals for this repository.
+This tutorial walks you through how to deploy Drupal on Kubernetes a minimal set of tools.
 
 ## Prerequisites
 
